@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Copy of Raxnet Tools - VPN Config Converter",
+  "description": "A specialized tool to convert VPN configurations from base64 (VMess), URL formats (VLESS, Trojan), or QR Codes into a clean, human-readable YAML format, ready for use in applications like Clash.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

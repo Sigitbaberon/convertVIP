@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raxnet Tools - VPN Config Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --mouse-x: 50vw;
+        --mouse-y: 50vh;
+      }
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: 'Inter', sans-serif;
+        background-color: #030712; /* gray-950 */
+      }
+      .font-mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .aurora-container {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .aurora-container::before,
+      .aurora-container::after {
+        content: '';
+        position: absolute;
+        width: 80vmax;
+        height: 80vmax;
+        border-radius: 50%;
+        filter: blur(120px);
+        mix-blend-mode: plus-lighter;
+        opacity: 0.15;
+      }
+      .aurora-container::before {
+        background: radial-gradient(circle at center, #38bdf8, transparent 40%);
+        top: var(--mouse-y);
+        left: var(--mouse-x);
+        transform: translate(-50%, -50%);
+        transition: top 0.4s ease-out, left 0.4s ease-out;
+      }
+      .aurora-container::after {
+        background: radial-gradient(circle at center, #3b82f6, transparent 50%);
+        animation: aurora-pulse 15s linear infinite alternate;
+      }
+      @keyframes aurora-pulse {
+        0% { transform: translate(-20%, -20%) scale(0.8); }
+        50% { transform: translate(20%, 30%) scale(1.2); }
+        100% { transform: translate(-20%, -20%) scale(0.8); }
+      }
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.7s ease-out forwards;
+      }
+      @keyframes slide-in-stagger {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+      .animate-slide-in-stagger {
+        animation: slide-in-stagger 0.4s ease-out forwards;
+        opacity: 0;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^18.2.0/",
+    "react/": "https://esm.sh/react@^18.2.0/",
+    "react": "https://esm.sh/react@^18.2.0",
+    "html5-qrcode": "https://esm.sh/html5-qrcode@2.3.8"
+  }
+}
+</script>
+</head>
+  <body class="text-gray-200">
+    <div class="aurora-container"></div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    <script>
+      document.body.addEventListener('mousemove', (e) => {
+        requestAnimationFrame(() => {
+          document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
+          document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+        });
+      });
+    </script>
+  </body>
+</html>
