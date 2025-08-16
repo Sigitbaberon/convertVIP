@@ -1,6 +1,5 @@
-// A relative endpoint for the Cloudflare Worker.
-// This assumes the Worker is served on the same domain as the Pages site.
-const WORKER_ENDPOINT = '/api/log-conversion';
+// The absolute endpoint for the Cloudflare Worker.
+const WORKER_ENDPOINT = 'https://convertapi.raxnetglobal.workers.dev/';
 
 /**
  * Sends the conversion result to a Cloudflare Worker.
@@ -15,25 +14,23 @@ export async function sendToWorker(content: string): Promise<void> {
   }
 
   try {
-    const response = await fetch(WORKER_ENDPOINT, {
+    // Use 'no-cors' mode to prevent the browser from blocking the request due to CORS policy.
+    // This is a "fire-and-forget" call, so we don't need to inspect the response,
+    // which would be opaque anyway.
+    await fetch(WORKER_ENDPOINT, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ content }),
     });
 
-    if (!response.ok) {
-      // Log the error but don't bother the user with it.
-      console.error(`Worker request failed: ${response.status} ${response.statusText}`);
-      const responseBody = await response.text();
-      console.error('Worker response:', responseBody);
-    } else {
-        // Optional: log success for debugging purposes.
-        console.log('Successfully logged conversion to worker.');
-    }
+    // With 'no-cors', we can't check the response status. We just assume it was sent if no network error occurred.
+    console.log('Conversion data sent to worker.');
+    
   } catch (error) {
-    // Log network or other fetch-related errors.
+    // This will catch network errors (e.g., the user is offline).
     console.error('Failed to send data to worker:', error);
   }
 }
